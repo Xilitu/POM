@@ -1,16 +1,22 @@
 import math
 
 def dig_data(filename):
+    # initialize dicts
     old_firehouses = {}
     new_firehouses = {}
     boroughs = {}
     firehouses = []
+
     with open(filename) as f:
+        # section = part of data file
         section = 0
         for line in f:
+            # every section has a headline containing a '#' => using it as a section seperator
             if '#' in line:
                 section += 1
             else:
+                # data is comma delimited therefore splitting it with ','
+                # also getting rid of new line character ('\n') and existing whitespaces
                 if section ==1:
                     split = line.replace('\n', '').split(',')
                     nOldFirehouses = int(split[0])
@@ -45,11 +51,13 @@ def calc_protection_cost(boroughs, old_firehouses, new_firehouses, c):
             x_f = old_firehouses[fhouse][0]
             y_f = old_firehouses[fhouse][1]
 
+            # euclidian distance
             protection_cost[fhouse,borough ] = c*math.sqrt( (x_b-x_f)**2 + (y_b - y_f)**2 )
         for fhouse in new_firehouses:
             x_f = new_firehouses[fhouse][0]
             y_f = new_firehouses[fhouse][1]
 
+            # euclidian distance
             protection_cost[fhouse, borough ] = c*math.sqrt( (x_b-x_f)**2 + (y_b - y_f)**2 )
 
     return protection_cost

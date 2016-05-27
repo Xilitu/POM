@@ -47,6 +47,7 @@ def solve(full_path_instance):
 
     # linking constraint
     for j in boroughs:
+        # can only be linked to old firehose from beginning
         i = boroughs[j][2]
         model.addConstr(
             1-x[i,j] <= y[i]

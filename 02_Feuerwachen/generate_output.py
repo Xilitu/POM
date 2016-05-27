@@ -2,28 +2,28 @@ import matplotlib.pyplot as plt
 from import_data import *
 
 def graphics_output(model, x, y, full_path_instance):
+    # get data from file
     nOldFirehouses, nNewFirehouses, nBoroughs, c, b, old_firehouses, new_firehouses, boroughs, firehouses = dig_data(full_path_instance)
 
+    # set plot size
     plt.figure(figsize=(50,50))
-    # get firehouses in one darray
-    firehouses = [f for f in old_firehouses]
-    for f in new_firehouses:
-        firehouses.append( f )
 
-
+    # only show firehouses that are in use
     for f in firehouses:
+        # c: number of connections to firehouse
         c = 0
         for b in boroughs:
             if x[f,b].x == 1:
                 c += 1
         if c == 0:
             try:
+                # delete firehouse if no borough is connected
                 old_firehouses.pop(f,None)
                 new_firehouses.pop(f,None)
             except:
                 print('error')
 
-
+    # draw scatter points for boroughs and firehouses
     x_b = [boroughs[b][0] for b in boroughs]
     y_b = [boroughs[b][1] for b in boroughs]
 
@@ -37,6 +37,7 @@ def graphics_output(model, x, y, full_path_instance):
     plt.scatter(x_of, y_of, color="brown", alpha=1, marker="v",s=100)
     plt.scatter(x_nf, y_nf, color="red", alpha=1, marker="^",s=100)
 
+    # draw connection lines and annotations
     for b in boroughs:
         plt.annotate(b, (boroughs[b][0] + 2, boroughs[b][1]) )
         for f in old_firehouses:
@@ -50,7 +51,3 @@ def graphics_output(model, x, y, full_path_instance):
 
     plt.grid(True)
     plt.show()
-
-def txt_ouput(model,x,y):
-    nOldFirehouses, nNewFirehouses, nBoroughs, c, b, old_firehouses, new_firehouses, boroughs, firehouses = dig_data('firedata1.csv')
-
